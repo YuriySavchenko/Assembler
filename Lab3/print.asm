@@ -1,4 +1,4 @@
-section .text
+section .code
 
 %macro print 2
     mov eax, 4      ; sys_write
