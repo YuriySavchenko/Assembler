@@ -7,12 +7,12 @@ section .text
 StrHex_MY: 
     push ebp
     mov ebp, esp
-	mov ecx, [ebp+8] ;кількість бітів числа
-	cmp ecx, 0
-	jle .exitp
-	shr ecx, 3 ;кількість байтів числа
-	mov esi, [ebp+12] ;адреса числа
-	mov ebx, [ebp+16] ;адреса буфера результату
+    mov ecx, [ebp+8] ;кількість бітів числа
+    cmp ecx, 0
+    jle .exitp
+    shr ecx, 3 ;кількість байтів числа
+    mov esi, [ebp+12] ;адреса числа
+   	mov ebx, [ebp+16] ;адреса буфера результату
 
 .cycle:
 	mov dl, byte [esi+ecx-1] ;байт числа - це дві hex-цифри
