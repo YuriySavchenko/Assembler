@@ -12,7 +12,7 @@ StrHex_MY:
     jle .exitp
     shr ecx, 3 ;кількість байтів числа
     mov esi, [ebp+12] ;адреса числа
-   	mov ebx, [ebp+16] ;адреса буфера результату
+    mov ebx, [ebp+16] ;адреса буфера результату
 
 .cycle:
 	mov dl, byte [esi+ecx-1] ;байт числа - це дві hex-цифри
