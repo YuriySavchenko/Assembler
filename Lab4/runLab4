@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# compile files
+
+nasm -f elf module.asm
+nasm -f elf longop.asm
+nasm -f elf print.asm
+nasm -f elf exit.asm
+nasm -f elf main4.asm
+
+# linking files 
+
+ld -m elf_i386 -o obj module.o longop.o print.o exit.o main4.o
+
+# run program
+
+./obj
+
+# delete files
+
+rm *.o obj
