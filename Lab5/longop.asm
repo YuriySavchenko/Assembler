@@ -35,7 +35,7 @@ Add_608_LONGOP:
     jnz .cycle                            ; while value in ECX not equal 0 we are repeat cycle
 
     pop ebp                               ; restoration stack
-    ret 12                                ;@exit_proc of procedure
+    ret 12                                ; exit of procedure
 
 
 ; procedure for subtraction numbers increased bit rate
@@ -64,7 +64,7 @@ Sub_512_LONGOP:
     jnz .cycle                            ; while value in ECX not equal 0 we are repeat cycle
 
     pop ebp                               ; restoration stack
-    ret 12                                ;@exit_proc of procedure
+    ret 12                                ; exit of procedure
 
 ; procedure for multiplication number on 32-bit number
 
@@ -95,7 +95,7 @@ Mul_Nx32_LONGOP:
     jnz .cycle                            ; while value in ECX not equal 0 we are repeat cycle
 
     pop ebp                               ; restoration stack
-    ret 12                                ;@exit_proc of procedure
+    ret 12                                ; exit of procedure
 
 ; procedure for multiplication number on number
 
@@ -111,26 +111,26 @@ Mul_NxN_LONGOP:
 	
 	mov dword [counter], 0                ; setup variable counter as null
 
-	@cycle_Mul_NxN_out:			          ; begin of first loop
+	@cycle_Mul_NxN_out:                   ; begin of first loop
 
-	mov eax, [counter]			          ; write value from variable counter to EAX
-	inc eax				                  ; increment EAX	
+	mov eax, [counter]                    ; write value from variable counter to EAX
+	inc eax                               ; increment EAX	
 	cmp eax, [length]                     ; equal EAX and variable length 
-	jg @exit_proc					      ; exit of program
+	jg @exit_proc                         ; exit of program
 	mov [counter], eax                    ; write value from EAX to variable counter
 
-	mov ecx, [length]			          ; setup counter for second loop
+	mov ecx, [length]                     ; setup counter for second loop
 	mov ebx, dword [esi+4*eax-4]	      ; write to memory Аix32
 	mov [Value_Ai], ebx                   ; write value from EBX to variable Value_Ai
 
-	xor ebx, ebx				          ; set null value for EBX
+	xor ebx, ebx                          ; set null value for EBX
 
 	@cycle_Mul_NxN_in:                    ; begin of second loop
 
 	mov eax, [Value_Ai]                   ; write value from Value_Ai to EAX
 	mul dword [edi+4*ebx]                 ; multiplication of operands
 		
-    clc								      ; set null bit CF for register EFLAGS
+    clc                                   ; set null bit CF for register EFLAGS
 	add dword [ebp+4*ebx], eax            ; addition without transfer
 	adc dword [ebp+4*ebx+4], edx          ; addition with transfer
 	
@@ -148,11 +148,11 @@ Mul_NxN_LONGOP:
 
 	@not_res_cor:                         ; begin of loop not_res_cor
 
-	inc ebx					              ; increment EBX 
-	dec ecx				                  ; decrement ECX
+	inc ebx                               ; increment EBX 
+	dec ecx                               ; decrement ECX
 	jnz @cycle_Mul_NxN_in	              ; if counter not equal 1 then go to cycle_Mul_NxN
 		
-	add ebp,4					          ; add digit 4 to register EBP
+	add ebp, 4                            ; add digit 4 to register EBP
 	jmp @cycle_Mul_NxN_out                ; repeat cycle_Mul_NxN_out
 
 @exit_proc:                               ; procedure for exit of program
