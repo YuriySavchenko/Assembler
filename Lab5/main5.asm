@@ -134,7 +134,7 @@ _start:
     
     push mul_result_z                                               ; write to STACK variable for save result
     push mul_test10                                                 ; write to STACK address of first operand
-    push mul_test110                                                 ; write to STACK address of second operand
+    push mul_test110                                                ; write to STACK address of second operand
     push 10                                                         ; write to STACK count of 32-bits digits in digit
     call Mul_NxN_LONGOP                                             ; call function for multiplication
     
