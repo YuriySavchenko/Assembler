@@ -130,7 +130,7 @@ Mul_NxN_LONGOP:
 	mov eax, [Value_Ai]                   ; write value from Value_Ai to EAX
 	mul dword [edi+4*ebx]                 ; multiplication of operands
 		
-    clc                                   ; set null bit CF for register EFLAGS
+ 	clc                                   ; set null bit CF for register EFLAGS
 	add dword [ebp+4*ebx], eax            ; addition without transfer
 	adc dword [ebp+4*ebx+4], edx          ; addition with transfer
 	
@@ -157,5 +157,5 @@ Mul_NxN_LONGOP:
 
 @exit_proc:                               ; procedure for exit of program
 
-    pop ebp                               ; delete pointer on STACK
-    ret 16                                ; stop procedure
+ 	pop ebp                               ; delete pointer on STACK
+ 	ret 16                                ; stop procedure
