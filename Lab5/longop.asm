@@ -155,7 +155,9 @@ Mul_NxN_LONGOP:
 	add ebp, 4                            ; add digit 4 to register EBP
 	jmp @cycle_Mul_NxN_out                ; repeat cycle_Mul_NxN_out
 
-@exit_proc:                               ; procedure for exit of program
+; procedure for exit of program
+
+@exit_proc:
 
  	pop ebp                               ; delete pointer on STACK
  	ret 16                                ; stop procedure
