@@ -12,7 +12,7 @@ section .data
     clear       db 0xa, 0xd                                         ; step on new line
 
     fact_m dd 2                                                     ; value for landslide
-    fact_counter dd 64                                              ; counter of repets
+    fact_counter dd 63                                              ; counter of repets
     fact_v dd 1, 0, 0, 0, 0, 0, 0, 0, 0, 0                          ; value for save result of operation factorial()
     
     mul_test10 dd 0FFFFFFFFh, 0FFFFFFFFh, 0FFFFFFFFh, 0FFFFFFFFh, 0FFFFFFFFh, 0FFFFFFFFh, 0FFFFFFFFh, 0FFFFFFFFh, 0FFFFFFFFh, 0FFFFFFFFh            ; first operand for multiplication
@@ -109,7 +109,6 @@ _start:
 
     xor eax, eax                                                    ; set null value for EAX
     xor ebx, ebx                                                    ; set null value for EBX
-
 
     ; calculating Nx32 A=111...11 B=FFFFFFFF
     

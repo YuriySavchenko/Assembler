@@ -80,7 +80,7 @@ Mul_Nx32_LONGOP:
     
     .cycle:
     
-    mov eax, ebp                          ; EAX = A
+    mov eax, [ebp]                        ; EAX = A
     mul dword [esi+4*edi]                 ; multiplication of operands
 
     clc                                   ; set null bit CF for register EFLAGS   
