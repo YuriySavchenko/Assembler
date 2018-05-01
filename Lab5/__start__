@@ -1,0 +1,14 @@
+#!/bin/bash
+
+nasm -g -f elf module.asm
+nasm -g -f elf longop.asm
+nasm -g -f elf print.asm
+nasm -g -f elf exit.asm
+nasm -g -f elf main5.asm
+
+ld -m elf_i386 -o main5.run module.o longop.o print.o exit.o main5.o
+
+./main5.run
+
+rm *.o 
+
