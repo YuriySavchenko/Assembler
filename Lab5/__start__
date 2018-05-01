@@ -10,5 +10,5 @@ ld -m elf_i386 -o main5.run module.o longop.o print.o exit.o main5.o
 
 ./main5.run
 
-rm *.o 
+rm *.o main5.run
 
