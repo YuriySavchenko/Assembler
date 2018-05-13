@@ -10,10 +10,13 @@ SHR_LONGOP_PROC:
     xor edi, edi
     xor ebx, ebx
     xor ecx, ecx
+    xor esi, esi
 
-    mov ecx, 24
+    mov ecx, 23
 
+    mov esi, [edx+ecx*4]
     shr byte [edx+ecx*4], 1
+    mov esi, [edx+ecx*4]
     adc edi, 0
     clc
 
@@ -21,6 +24,7 @@ SHR_LONGOP_PROC:
 
     jnc .label0
     or dword [edx+ecx*4], 080000000h
+    mov esi, [edx+ecx*4]
     jmp .label1
 
     .label0:
