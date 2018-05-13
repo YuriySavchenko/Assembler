@@ -11,8 +11,7 @@ SHR_LONGOP_PROC:
     xor ebx, ebx
     xor ecx, ecx
 
-    ;mov ecx, 24
-    mov ecx, 1
+    mov ecx, 24
 
     shr byte [edx+ecx*4], 1
     adc edi, 0
@@ -30,22 +29,23 @@ SHR_LONGOP_PROC:
     .label1:
     dec ecx 
     
-    ;.loop:
-    ;cmp edi, 0
-    ;jz .label2
-    ;or dword [edx+ecx*4], 080000000h
-    ;jmp .label3
+    .loop:
+    cmp edi, 0
+    jz .label2
+    or dword [edx+ecx*4], 080000000h
+    jmp .label3
     
-    ;.label2:
-    ;and dword [edx+ecx*4], 07FFFFFFFh 
+    .label2:
+    and dword [edx+ecx*4], 07FFFFFFFh 
 
-    ;.label3:
-    ;shr byte [edx+ecx*4], 1
-    ;adc edi, 0
-    ;clc
-    ;dec ecx 
-    ;jnz .loop
-     
+    .label3:
+    xor edi, edi
+    shr byte [edx+ecx*4], 1
+    adc edi, 0
+    clc
+    dec ecx 
+    jnz .loop
+    
     pop ebp
 
     ret 8

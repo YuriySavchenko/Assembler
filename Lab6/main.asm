@@ -11,8 +11,7 @@ segment readable executable
 start:
     push buff
     push value
-    ;push 768
-    push 64
+    push 768
     call StrHex_MY 
 
     print buff, 768
@@ -26,22 +25,19 @@ start:
     print numBuff, 64
     print clr, 2
     
-    ;xor ecx, ecx
-    ;mov ecx, count
+    xor ecx, ecx
+    mov ecx, count
     
-    ;.cycle:
+    .cycle:
     push value
     push number
     call SHR_LONGOP_PROC
-    ;dec byte [count]
-    ;jnz .cycle
-    
-    ;SHR_LONGOP value, 4
+    dec byte [count]
+    jnz .cycle
     
     push buff
     push value
-    ;push 768
-    push 64
+    push 768
     call StrHex_MY
     
     print buff, 768
@@ -59,8 +55,7 @@ start:
 
 segment readable writeable
 
-;value   dd  24 dup (0FFFFFFFFh)
-value   dd  4, 4
+value   dd  24 dup (0FFFFFFFFh)
 number  dd  3
 count   dd  3
 buff    db  768 dup(0)
