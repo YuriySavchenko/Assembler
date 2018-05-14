@@ -32,7 +32,7 @@ start:
     push value
     push number
     call SHR_LONGOP_PROC
-    dec byte [count]
+    dec dword [count]
     jnz .cycle
     
     push buff
@@ -55,9 +55,9 @@ start:
 
 segment readable writeable
 
-value   dd  24 dup (0FFFFFFFFh)
-number  dd  3
-count   dd  3
+value   dd  24 dup (3)
+number  dd  4
+count   dd  4
 buff    db  768 dup(0)
 numBuff db  64 dup(0)
 clr     db  13, 10
