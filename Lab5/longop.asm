@@ -74,7 +74,7 @@ Mul_Nx32_LONGOP:
     mov ebp, esp                          ; write pinter on STACK to register EBP
     mov ecx, [ebp+8]                      ; setup counter
     mov esi, [ebp+16]                     ; ESI = address A
-    mov ebp, [ebp+12]                    ; EBP = address B
+    mov ebp, [ebp+12]                     ; EBP = address B
     
     xor ebx, ebx                          ; set null value for EBP
     xor edi, edi                          ; set null value for EDI
@@ -102,59 +102,59 @@ Mul_Nx32_LONGOP:
 
 Mul_NxN_LONGOP:
 
-	push ebp                              ; write EBP to STACK
-	mov ebp, esp                          ; write pointer on STACK to register EBP
-	mov eax, [ebp+8]                      ; move value counter to EAX
-	mov [length], eax                     ; write value from EAX in variable length
-	mov esi, [ebp+12]                     ; ESI = address B 
-	mov edi, [ebp+16]                     ; EDI = address A
-	mov ebp, [ebp+20]                     ; EBP = address RESULT
+    push ebp                              ; write EBP to STACK
+    mov ebp, esp                          ; write pointer on STACK to register EBP
+    mov eax, [ebp+8]                      ; move value counter to EAX
+    mov [length], eax                     ; write value from EAX in variable length
+    mov esi, [ebp+12]                     ; ESI = address B 
+    mov edi, [ebp+16]                     ; EDI = address A
+    mov ebp, [ebp+20]                     ; EBP = address RESULT
 	
-	mov dword [counter], 0                ; setup variable counter as null
+    mov dword [counter], 0                ; setup variable counter as null
 
-	@cycle_Mul_NxN_out:                   ; begin of first loop
+    @cycle_Mul_NxN_out:                   ; begin of first loop
 
-	mov eax, [counter]                    ; write value from variable counter to EAX
-	inc eax                               ; increment EAX	
-	cmp eax, [length]                     ; equal EAX and variable length 
-	jg @exit_proc                         ; exit of program
-	mov [counter], eax                    ; write value from EAX to variable counter
+    mov eax, [counter]                    ; write value from variable counter to EAX
+    inc eax                               ; increment EAX	
+    cmp eax, [length]                     ; equal EAX and variable length 
+    jg @exit_proc                         ; exit of program
+    mov [counter], eax                    ; write value from EAX to variable counter
 
-	mov ecx, [length]                     ; setup counter for second loop
-	mov ebx, dword [esi+4*eax-4]	      ; write to memory Аix32
-	mov [Value_Ai], ebx                   ; write value from EBX to variable Value_Ai
+    mov ecx, [length]                     ; setup counter for second loop
+    mov ebx, dword [esi+4*eax-4]	      ; write to memory Аix32
+    mov [Value_Ai], ebx                   ; write value from EBX to variable Value_Ai
 
-	xor ebx, ebx                          ; set null value for EBX
+    xor ebx, ebx                          ; set null value for EBX
 
-	@cycle_Mul_NxN_in:                    ; begin of second loop
+    @cycle_Mul_NxN_in:                    ; begin of second loop
 
-	mov eax, [Value_Ai]                   ; write value from Value_Ai to EAX
-	mul dword [edi+4*ebx]                 ; multiplication of operands
-		
- 	clc                                   ; set null bit CF for register EFLAGS
-	add dword [ebp+4*ebx], eax            ; addition without transfer
-	adc dword [ebp+4*ebx+4], edx          ; addition with transfer
-	
-	jnc @not_res_cor                      ; repeat loop
+    mov eax, [Value_Ai]                   ; write value from Value_Ai to EAX
+    mul dword [edi+4*ebx]                 ; multiplication of operands
 
-	mov eax, 1                            ; write digit 1 in EAX
-	add eax, ebx                          ; addition EAX and EBX without transfer
-	stc                                   ; setup transfer as digit 1  
+    clc                                   ; set null bit CF for register EFLAGS
+    add dword [ebp+4*ebx], eax            ; addition without transfer
+    adc dword [ebp+4*ebx+4], edx          ; addition with transfer
 
-	res_cor2:                             ; begin of res_cor2
-	inc eax                               ; increment EAX
-		 
-	adc dword [ebp+4*eax], 0              ; add value from address and transfer
-	jb res_cor2                           ; go to begin res_cor2
+    jnc @not_res_cor                      ; repeat loop
 
-	@not_res_cor:                         ; begin of loop not_res_cor
+    mov eax, 1                            ; write digit 1 in EAX
+    add eax, ebx                          ; addition EAX and EBX without transfer
+    stc                                   ; setup transfer as digit 1  
 
-	inc ebx                               ; increment EBX 
-	dec ecx                               ; decrement ECX
-	jnz @cycle_Mul_NxN_in	              ; if counter not equal 1 then go to cycle_Mul_NxN
-		
-	add ebp, 4                            ; add digit 4 to register EBP
-	jmp @cycle_Mul_NxN_out                ; repeat cycle_Mul_NxN_out
+    res_cor2:                             ; begin of res_cor2
+    inc eax                               ; increment EAX
+
+    adc dword [ebp+4*eax], 0              ; add value from address and transfer
+    jb res_cor2                           ; go to begin res_cor2
+
+    @not_res_cor:                         ; begin of loop not_res_cor
+
+    inc ebx                               ; increment EBX 
+    dec ecx                               ; decrement ECX
+    jnz @cycle_Mul_NxN_in	              ; if counter not equal 1 then go to cycle_Mul_NxN
+
+    add ebp, 4                            ; add digit 4 to register EBP
+    jmp @cycle_Mul_NxN_out                ; repeat cycle_Mul_NxN_out
 
 ; procedure for exit of program
 
