@@ -1,6 +1,8 @@
+;====================== comments ===================
 ; first operand - address bufer result (string symbols)
 ; second operand - address of number
 ; third operand - count bits of number (should be multiple 8)
+;===================================================
 
 ;======================= code ======================
 segment readable executable
