@@ -121,7 +121,7 @@ Mul_NxN_LONGOP:
     mov [counter], eax                    ; write value from EAX to variable counter
 
     mov ecx, [length]                     ; setup counter for second loop
-    mov ebx, dword [esi+4*eax-4]	      ; write to memory Аix32
+    mov ebx, dword [esi+4*eax-4]          ; write to memory Аix32
     mov [Value_Ai], ebx                   ; write value from EBX to variable Value_Ai
 
     xor ebx, ebx                          ; set null value for EBX
@@ -151,7 +151,7 @@ Mul_NxN_LONGOP:
 
     inc ebx                               ; increment EBX 
     dec ecx                               ; decrement ECX
-    jnz @cycle_Mul_NxN_in	              ; if counter not equal 1 then go to cycle_Mul_NxN
+    jnz @cycle_Mul_NxN_in                 ; if counter not equal 1 then go to cycle_Mul_NxN
 
     add ebp, 4                            ; add digit 4 to register EBP
     jmp @cycle_Mul_NxN_out                ; repeat cycle_Mul_NxN_out
@@ -160,5 +160,5 @@ Mul_NxN_LONGOP:
 
 @exit_proc:
 
- 	pop ebp                               ; delete pointer on STACK
- 	ret 16                                ; stop procedure
+    pop ebp                               ; delete pointer on STACK
+    ret 16                                ; stop procedure
