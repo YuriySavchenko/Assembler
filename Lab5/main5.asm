@@ -116,9 +116,9 @@ _start:
     
     push mul_result_nn
     push mul_test10x32                                              ; write to STACK variable for save result
-    push result                                                ; write to STACK address of first operand
+    push result                                                     ; write to STACK address of first operand
     push 10                                                         ; write to STACK count of 32-bits digits in digit
-    call Mul_NxN_LONGOP                                            ; call function for multiplication
+    call Mul_NxN_LONGOP                                             ; call function for multiplication
     
     push textBuff                                                   ; write to STACK text string for result
     push mul_result_nn                                              ; write to STACK value which has result
