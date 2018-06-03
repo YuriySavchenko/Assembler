@@ -6,8 +6,6 @@ section .data
     length dd 0
     Value_Ai dd 0
     tmp dd 0
-    ;res db "000000FF 23C771A4 224F3EA9 55F44ABB 627CAFEC D3822F29 0C6EF93C D162C058 00000000 000000000", 0xa, 0xd
-    ;lll equ $ - res
 
 section .code
     
