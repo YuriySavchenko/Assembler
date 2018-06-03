@@ -24,7 +24,7 @@ Add_608_LONGOP:
     inc edx                               ; set counter for number of 32-bit group more on 1 point
     dec ecx                               ; set counter less on 1 point
 
-    jnz .cycle                             ; while value in ECX not equal 0 we are repeat cycle
+    jnz .cycle                            ; while value in ECX not equal 0 we are repeat cycle
 
     pop ebp                               ; restoration stack
     ret 12                                ; exit of procedure
@@ -38,7 +38,7 @@ Sub_512_LONGOP:
     
     mov esi, [ebp+16]                     ; ESI - adress of A
     mov ebx, [ebp+12]                     ; EBX - adress of B
-    mov edi, [ebp+8]                     ; EDI - adress of Result
+    mov edi, [ebp+8]                      ; EDI - adress of Result
     
     mov ecx, 16                           ; count of repeat
     mov edx, 0                            ; number of 32-bit group 
@@ -54,7 +54,7 @@ Sub_512_LONGOP:
     inc edx                               ; set counter for number of 32-bit group more on 1 point
     dec ecx                               ; set counter less on 1 point
 
-    jnz .cycle                             ; while value in ECX not equal 0 we are repeat cycle
+    jnz .cycle                            ; while value in ECX not equal 0 we are repeat cycle
 
     pop ebp                               ; restoration stack
     ret 12                                ; exit of procedure
