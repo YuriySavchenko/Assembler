@@ -147,6 +147,8 @@ FloatToDec:
     or dword [mnt], 000800000h                      ; set 23 bit as 1
     shl dword [mnt], 8                              ; left shift on 8 bits 
     shr edx, 23                                     ; right shift on 23 bits
+    cmp edx, 127
+    jng .label_1
     sub edx, 126                                    ; substraction { EDX = EDX - 126 }
     xor eax, eax                                    ; fill EAX via nulls
     
@@ -155,10 +157,14 @@ FloatToDec:
     rcl eax, 1                                      ; left shift EAX and set younger bit as value from CF
     dec edx                                         ; EDX--
     jnz .loop_integer                               ; ability for jump on { .loop_integer }
-
-    mov dword [integer], eax
+    jmp .label_2 
 
     .label_1:
+    xor eax, eax
+
+
+    .label_2:
+    mov dword [integer], eax
     xor edx, edx
     xor ecx, ecx
 
@@ -169,7 +175,7 @@ FloatToDec:
     xor eax, eax
     mov ebp, dword [mnt]
     mov ecx, dword [mnt]
-    mov esi, 58
+    mov esi, 58 
 
     .loop_float:
     clc
@@ -196,6 +202,8 @@ FloatToDec:
     mov esi, 1
     mov ebx, 57
     mov eax, dword [integer]
+    cmp eax, 0
+    je .write_null
     mov ebp, 10                                     ; write to EBP divider
 
     .loop_div:
@@ -206,13 +214,18 @@ FloatToDec:
     dec ebx                                         ; ECX--
     
     cmp eax, 0                                      ; compare EAX with 0
-    je .label_2                                      ; ability for jump on { .write_point }
+    je .label_3                                      ; ability for jump on { .write_point }
     jmp .loop_div                                   ; jump on label { .loop_div }
 
-    .label_2:
+    .label_3:
     cmp byte [sign], 1                              ; compare EBX with zero
     je .write_sign                                  ; ability to jump { .write_sign }
     jmp .exit                                       ; jump on label { .exit }
+    
+    .write_null:
+    mov dl, 48
+    mov byte [edi+ebx-1], dl
+    dec ebx
     
     .write_sign:
     xor edx, edx
