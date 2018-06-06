@@ -213,7 +213,7 @@ FloatToDec:
     dec ebx                                         ; ECX--
     
     cmp eax, 0                                      ; compare EAX with 0
-    je .label_3                                      ; ability for jump on { .write_point }
+    je .label_3                                     ; ability for jump on { .write_point }
     jmp .loop_div                                   ; jump on label { .loop_div }
 
     .label_3:
