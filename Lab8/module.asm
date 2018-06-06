@@ -126,84 +126,83 @@ FloatToDec:
     mov esi, [ebp+12]                               ; ESI = address float number
     mov edi, [ebp+16]                               ; EDI = address of result 
 
-    mov eax, dword [esi]                            ; write value from ESI to EAX
-    mov dword [mnt], eax                            ; write value from EAX to { mnt }
-    mov edx, dword [esi]                            ; write to EDX float number 
-    xor eax, eax                                    ; fill EAX via nulls
-    xor ecx, ecx                                    ; fill ECX via nulls
-    
-    and edx, 080000000h                             ; cut oldest bit
-    cmp edx, 0                                      ; compare EDX with zero
-
+    mov ecx, dword [esi]                            ; write to EDX float number 
+    mov dword [mnt], ecx                            ; write value from EAX to { mnt }
+    and ecx, 080000000h                             ; cut oldest bit
+    cmp ecx, 0                                      ; compare EDX with zero
     je .write_edx                                   ; ability for jump on { .loop_int }
     mov byte [sign], 1                              ; write sign
     
     .write_edx:
-    mov edx, dword [esi]                            ; write to EDX float number
+    mov ecx, dword [esi]                            ; write to EDX float number
 
     .cut_M:
-    and edx, 07F800000h                             ; cut bits from 23 postion until 31
+    and ecx, 07F800000h                             ; cut bits from 23 postion until 31
     and dword [mnt], 0007FFFFFh                     ; cut bits from 0 position until 23
     or dword [mnt], 000800000h                      ; set 23 bit as 1
     shl dword [mnt], 8                              ; left shift on 8 bits 
-    shr edx, 23                                     ; right shift on 23 bits
-    cmp edx, 127
-    jng .label_1
-    sub edx, 126                                    ; substraction { EDX = EDX - 126 }
+    shr ecx, 23                                     ; right shift on 23 bits
+    mov edx, dword [mnt]                            ; write value from { mnt  } to EDX
+    cmp ecx, 127                                    ; substruction { EDX = EDX - 126 }
+    jng .invert_sub                                 ; ability for jump on { .invert_sub }
+    sub ecx, 126                                    ; substraction { EDX = EDX - 126 }
     xor eax, eax                                    ; fill EAX via nulls
-    
-    .loop_integer:
-    shl dword [mnt], 1                              ; left shift EBX on one bit
-    rcl eax, 1                                      ; left shift EAX and set younger bit as value from CF
-    dec edx                                         ; EDX--
-    jnz .loop_integer                               ; ability for jump on { .loop_integer }
-    jmp .label_2 
+    shld eax, edx, cl                               ; left shift { EAX <- EDX } on count in CL
+    shl dword [mnt], cl                             ; left shift value in { mnt } on count in CL
+    jmp .label_2                                    ; jump on { .label_2 }
+    .invert_sub:                                    
+    mov eax, 126                                    ; write to EAX value 126
+    sub eax, ecx                                    ; substruction { EAX = 126 - ECX }
+    mov ecx, eax                                    ; write to ECX result of substruction
+    xor eax, eax                                    ; fill EAX via nulls
+    shrd eax, edx, cl                               ; right shift { EAX -> EDX } on count in CL
+    shr dword [mnt], cl                             ; right shift value in { mnt } on count in CL
+    jmp .label_1                                    ; jump on { .label_1 }
 
     .label_1:
-    xor eax, eax
-
+    xor eax, eax                                    ; fill EAX via nulls
 
     .label_2:
-    mov dword [integer], eax
-    xor edx, edx
-    xor ecx, ecx
+    mov dword [integer], eax                        ; mov value in EAX to variable { integer }
+    xor edx, edx                                    ; fill EDX via nulls
+    xor ecx, ecx                                    ; fill ECX via nulls
 
-    mov dl, 46
-    mov byte [edi+57], dl
-    xor edx, edx
-    xor ecx, ecx
-    xor eax, eax
-    mov ebp, dword [mnt]
-    mov ecx, dword [mnt]
-    mov esi, 58 
+    mov dl, 46                                      ; write to CL code of symbol "."
+    mov byte [edi+57], dl                           ; write in result string symbol from CL
+    xor edx, edx                                    ; fill EDX via nulls
+    xor ecx, ecx                                    ; fill ECX via nulls
+    xor eax, eax                                    ; fill EAX via nulls
+    mov ebp, dword [mnt]                            ; copy value from variable { mnt } to EBP
+    mov ecx, dword [mnt]                            ; copy value from variable { mnt } to ECX
+    mov esi, 58                                     ; write to ESI number 58
 
     .loop_float:
-    clc
-    shld eax, ebp, 1
-    shl ebp, 1
-    clc
-    shld edx, ecx, 3
-    shl ecx, 3
-    clc
+    clc                                             ; set CF as 0
+    shld eax, ebp, 1                                ; left shift { EAX <- EBP } on 1 bit
+    shl ebp, 1                                      ; left shift EBP on 1 bit
+    clc                                             ; set CF as 0
+    shld edx, ecx, 3                                ; left shift { EDX <- ECX } on 3 bits
+    shl ecx, 3                                      ; left shift ECX on 3 bits
+    clc                                             ; set CF as 0
     
-    adc ebp, ecx
-    adc eax, 0
-    add edx, eax
-    add edx, 48
-    mov byte [edi+esi], dl
-    mov ecx, ebp
-    xor eax, eax
-    xor edx, edx
-    inc esi
+    adc ebp, ecx                                    ; addition { EBP = EBP + ECX }
+    adc eax, 0                                      ; addition { EBP = EBP + CF }
+    add edx, eax                                    ; addition { EDX = EDX + EAX }
+    add edx, 48                                     ; transform number in EDX to symbol
+    mov byte [edi+esi], dl                          ; write symbol to result string
+    mov ecx, ebp                                    ; copy value from EBP to ECX
+    xor eax, eax                                    ; fill EAX via nulls
+    xor edx, edx                                    ; fill EDX via nulls
+    inc esi                                         ; ESI++
     
-    cmp esi, 64
-    jne .loop_float 
+    cmp esi, 64                                     ; compare ESI with 64
+    jne .loop_float                                 ; ability for jump to { .loop_float }
 
-    mov esi, 1
-    mov ebx, 57
-    mov eax, dword [integer]
-    cmp eax, 0
-    je .write_null
+    mov esi, 1                                      ; write number 1 to ESI 
+    mov ebx, 57                                     ; rite number 57 to EBX
+    mov eax, dword [integer]                        ; copy value from variable { integer } to EAX
+    cmp eax, 0                                      ; compare EAX with 0
+    je .write_null                                  ; ability for jump { .write_null } 
     mov ebp, 10                                     ; write to EBP divider
 
     .loop_div:
@@ -223,12 +222,14 @@ FloatToDec:
     jmp .exit                                       ; jump on label { .exit }
     
     .write_null:
-    mov dl, 48
-    mov byte [edi+ebx-1], dl
-    dec ebx
+    mov dl, 48                                      ; write code of symbol to DL
+    mov byte [edi+ebx-1], dl                        ; write symbol on result string
+    dec ebx                                         ; EBX--
+    cmp byte [sign], 0                              ; compare value in variable { sign } with 0
+    je .exit                                        ; ability for jump on { .exit }
     
     .write_sign:
-    xor edx, edx
+    xor edx, edx                                    ; fill EDX via nulls
     mov edx, 45                                     ; symbol "-" as sign
     mov byte [edi+ebx-1], dl                        ; write symbol of sign in begin of result
     
@@ -236,10 +237,11 @@ FloatToDec:
     pop ebp                                         ; remove pointer on the STACK
     ret 12                                          ; return parametrs from STACK
     
-
+;======================= data ======================
 segment readable writeable
+;===================================================
 
 sign        db 0                                    ; value for save signum
 floatNum    db 10 dup(0)                            ; string for save fractional part
-mnt         dd 0                                    ; variable for saving mntonenta
-integer     dd 0
+mnt         dd 0                                    ; variable for saving exponenta
+integer     dd 0                                    ; variable for saving mantissa

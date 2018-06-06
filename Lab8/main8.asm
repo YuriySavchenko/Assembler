@@ -58,5 +58,5 @@ buff    db 64 dup(0)                        ; text buffer string for output resu
 clr     db 0xa, 0xd                         ; step on the new line
 brd     db 30 dup ('-')                     ; border
 
-valueC  dd -0.468192                 ; value C
+valueC  dd -0.999999                 ; value C
 result  dd ?                                ; result of equation
