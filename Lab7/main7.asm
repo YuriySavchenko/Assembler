@@ -135,6 +135,7 @@ start:
     mov eax, dword [valueX]
     sub eax, 4
     mov ecx, dword [valueM]
+    sub ecx, 3
     shl eax, cl
     mov ebx, dword [valueX]
     add ebx, 4
@@ -194,5 +195,5 @@ value1  dd 3445, 3445                       ; divider
 value2  dd 3445, 3445                       ; divider
 value3  dd 17808, 17809                     ; value for transform into decimal number
 valueX  dd 5                                ; value X
-valueM  dd 7                                ; value M
+valueM  dd 10                               ; value M
 result  dd 1 dup(0)                         ; result of equation
