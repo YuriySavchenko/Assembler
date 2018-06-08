@@ -150,6 +150,7 @@ FloatToDec:
     shld eax, edx, cl                               ; left shift { EAX <- EDX } on count in CL
     shl dword [mnt], cl                             ; left shift value in { mnt } on count in CL
     jmp .label_2                                    ; jump on { .label_2 }
+
     .invert_sub:                                    
     mov eax, 126                                    ; write to EAX value 126
     sub eax, ecx                                    ; substruction { EAX = 126 - ECX }
@@ -168,13 +169,13 @@ FloatToDec:
     xor ecx, ecx                                    ; fill ECX via nulls
 
     mov dl, 46                                      ; write to CL code of symbol "."
-    mov byte [edi+57], dl                           ; write in result string symbol from CL
+    mov byte [edi+43], dl                           ; write in result string symbol from CL
     xor edx, edx                                    ; fill EDX via nulls
     xor ecx, ecx                                    ; fill ECX via nulls
     xor eax, eax                                    ; fill EAX via nulls
     mov ebp, dword [mnt]                            ; copy value from variable { mnt } to EBP
     mov ecx, dword [mnt]                            ; copy value from variable { mnt } to ECX
-    mov esi, 58                                     ; write to ESI number 58
+    mov esi, 44                                     ; write to ESI number 58
 
     .loop_float:
     clc                                             ; set CF as 0
@@ -199,7 +200,7 @@ FloatToDec:
     jne .loop_float                                 ; ability for jump to { .loop_float }
 
     mov esi, 1                                      ; write number 1 to ESI 
-    mov ebx, 57                                     ; rite number 57 to EBX
+    mov ebx, 43                                     ; rite number 57 to EBX
     mov eax, dword [integer]                        ; copy value from variable { integer } to EAX
     cmp eax, 0                                      ; compare EAX with 0
     je .write_null                                  ; ability for jump { .write_null } 
@@ -234,6 +235,7 @@ FloatToDec:
     mov byte [edi+ebx-1], dl                        ; write symbol of sign in begin of result
     
     .exit:
+    mov dword [sign], 0                             ; write null to variable { sign }
     pop ebp                                         ; remove pointer on the STACK
     ret 12                                          ; return parametrs from STACK
     
