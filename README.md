@@ -1,5 +1,5 @@
 # Assembler
 
 ```
-Examples of typical laboratory works on Assembler
+Examples of the typical laboratory works on Assembly language.
 ````
